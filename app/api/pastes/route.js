@@ -51,7 +51,7 @@ export async function POST(request) {
 
   await redis.set(`paste:${id}`, paste);
 
-  const url = `${request.nextUrl.origin}/p/${id}`;
+  const url = `${request.nextUrl.origin}/api/pastes/${id}`;
 
   return NextResponse.json({ id, url }, { status: 201 });
 }

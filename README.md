@@ -90,7 +90,7 @@ Upstash Redis account
 Steps
 Clone the repository:
 
-git clone https://github.com/your-username/pastebin-lite.git
+git clone https://github.com/RagaviMuthuraman/pastebin-lite
 cd pastebin-lite
 
 

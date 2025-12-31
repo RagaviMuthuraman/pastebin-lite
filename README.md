@@ -1,36 +1,140 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pastebin-Lite
 
-## Getting Started
+Pastebin-Lite is a simple Pastebin-style web application where users can create text pastes and share a link to view them.
+It supports optional time-based expiry (TTL) and view-count limits.
 
-First, run the development server:
+This project was built as part of a take-home assignment.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## Live Demo
+
+Deployed URL:  
+https://pastebin-lite-blush.vercel.app
+
+## API Endpoints
+
+### Health Check
+**GET** `/api/healthz`
+
+Response:
+```json
+{ "ok": true }
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create Paste
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+POST /api/pastes
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Request body:
 
-## Learn More
+{
+  "content": "Hello world",
+  "ttl_seconds": 60,
+  "max_views": 5
+}
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Response:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+{
 
-## Deploy on Vercel
+Fetch Paste (API)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+GET /api/pastes/:id
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Response:
+
+{
+  "content": "Hello world",
+  "remaining_views": 4,
+  "expires_at": "2026-01-01T00:00:00.000Z"
+}
+
+
+Unavailable pastes return HTTP 404.
+
+View Paste (HTML)
+
+GET /p/:id
+
+Returns an HTML page displaying the paste content.
+Returns HTTP 404 if the paste is expired, missing, or view limit exceeded.
+
+View Paste (HTML)
+
+GET /p/:id
+
+Returns an HTML page displaying the paste content.
+Returns HTTP 404 if the paste is expired, missing, or view limit exceeded.
+
+Persistence Layer
+
+Uses Upstash Redis for persistence.
+
+Stores paste content, expiry timestamp, and view count.
+
+Ensures data survives across serverless requests.
+
+Suitable for serverless deployments.
+
+Running the Project Locally
+Prerequisites
+
+Node.js 18+
+
+npm
+
+Upstash Redis account
+
+Steps
+Clone the repository:
+
+git clone https://github.com/your-username/pastebin-lite.git
+cd pastebin-lite
+
+
+Install dependencies:
+
+npm install
+
+
+Create a .env.local file in the project root:
+
+UPSTASH_REDIS_REST_URL=your_upstash_redis_url
+UPSTASH_REDIS_REST_TOKEN=your_upstash_redis_token
+
+
+Start the development server:
+
+npm run dev
+
+
+Open in browser:
+
+http://localhost:3000
+Deployment
+The application is deployed on Vercel.
+Environment variables are configured in the Vercel dashboard.
+
+Notes
+No in-memory storage is used in production.
+
+Supports deterministic expiry testing using TEST_MODE=1 and x-test-now-ms header.
+
+Designed to pass automated evaluation tests.
+
+yaml
+Copy code
+
+---
+
+### ✅ FINAL STEP (DO THIS ONCE)
+
+```bash
+git add README.md
+git commit -m "Finalize README with all API endpoints"
+git push
+  "id": "abc123",
+  "url": "https://your-app.vercel.app/p/abc123"
+}

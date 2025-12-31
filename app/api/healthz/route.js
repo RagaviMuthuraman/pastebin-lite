@@ -11,7 +11,7 @@ export async function GET() {
   } catch (err) {
     console.error("REDIS ERROR:", err);
     return NextResponse.json(
-      { ok: false, error: "Redis not reachable" },
+      { ok: false, error: "Redis not reachable yet" },
       { status: 500 }
     );
   }
